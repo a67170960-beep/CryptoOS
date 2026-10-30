@@ -55,4 +55,4 @@ For signed APKs, add these optional repository secrets in GitHub:
 - `ANDROID_KEY_ALIAS`
 - `ANDROID_KEY_PASSWORD`
 
-Without signing secrets, the workflow builds an unsigned APK. No external malware-scanning service or VirusTotal API key is used.
+Without signing secrets, the workflow builds an unsigned APK.
