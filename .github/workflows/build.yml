@@ -57,7 +57,7 @@ jobs:
             | xargs -r -I{} cp "{}" build-output/CryptoOS-release.apk
           test -s build-output/CryptoOS-release.apk
 
-      - name: Upload APK for security check
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: CryptoOS-release-apk
