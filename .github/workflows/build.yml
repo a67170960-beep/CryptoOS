@@ -31,11 +31,14 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # The action defaults to the retired "tools" SDK package.
+          packages: platform-tools
 
       - name: Install Android SDK platform
         run: |
           yes | sdkmanager --licenses >/dev/null
-          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+          sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
 
       - name: Build APK
         working-directory: .
@@ -73,7 +76,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Download scanned APK
+      - name: Download built APK
         uses: actions/download-artifact@v4
         with:
           name: CryptoOS-release-apk
