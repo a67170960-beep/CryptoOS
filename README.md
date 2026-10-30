@@ -46,14 +46,13 @@ proot-distro login debian --user root -- bash -s < scripts/setup_osint.sh
 
 ## GitHub Actions
 
-The workflow builds a release APK on pushes, hashes it with SHA-256, and uploads it to VirusTotal for analysis. A VirusTotal result with more than three malicious detections blocks tagged releases.
+The workflow builds a release APK on pushes and creates a GitHub Release for tags beginning with `v`.
 
-Add these repository secrets in GitHub:
+For signed APKs, add these optional repository secrets in GitHub:
 
-- `VIRUSTOTAL_API_KEY` — required; the scan fails closed if absent. VirusTotal receives the APK and may share scan results with its users.
 - `ANDROID_KEYSTORE_BASE64`
 - `ANDROID_KEYSTORE_PASSWORD`
 - `ANDROID_KEY_ALIAS`
 - `ANDROID_KEY_PASSWORD`
 
-Until a signing keystore is configured, the workflow builds an unsigned release APK. GitHub Releases are created only for tags beginning with `v`, and only after the VirusTotal check passes.
+Without signing secrets, the workflow builds an unsigned APK. No external malware-scanning service or VirusTotal API key is used.
