@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -104,7 +104,7 @@ private fun HomeScreen(onOpenTerminal: () -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .background(Ink)
-            .windowInsetsPadding(WindowInsets.statusBars)
+            .windowInsetsPadding(WindowInsets.safeDrawing)
             .padding(horizontal = 22.dp, vertical = 18.dp)
     ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
