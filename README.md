@@ -4,7 +4,7 @@ CryptoOS is a native Android local-workspace shell built with Kotlin and Jetpack
 
 ## Features
 
-- **Home:** live clock and date, shortcut search, pin/unpin shortcuts, pinned-first ordering, 2- or 3-column layout, compact cards, three dark themes, four accent colors, live notes/workspace counters, five module shortcuts, and optional haptic feedback.
+- **Home:** subtle CryptoOS logo wallpaper, live clock and date, shortcut search, pin/unpin shortcuts, pinned-first ordering, 2- or 3-column layout, compact cards, three dark themes, four accent colors, live notes/workspace counters, five module shortcuts, and optional haptic feedback.
 - **Files:** browse app-private folders, move to parent, search, filter all/files/folders, sort by name/size/date/type, show/hide hidden entries, create text files/folders, preview text, copy/share text, rename, delete with confirmation, and inspect workspace storage use.
 - **Notes:** create/edit/delete, add tags, pin/unpin, search, filter by pinned/tag, sort by most recent, view character/word counts, copy/share notes, and keep notes on-device between sessions.
 - **Offline tools (23):** calculator, percentage calculator, word and character counts, uppercase/lowercase/title case, reverse text, trim lines, remove blank lines, unique lines, sort lines, JSON format/compact, URL encode/decode, Base64 encode/decode, Unix timestamp conversion, length and temperature conversion, color contrast, and UUID generation.

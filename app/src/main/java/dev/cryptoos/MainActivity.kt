@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -49,6 +51,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -190,10 +196,15 @@ private fun HomeScreen(
     val notesCount = CryptoStorage.loadNotes(context).size
     val workspaceFiles = remember { CryptoStorage.workspace(context).list()?.size ?: 0 }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        CryptoMark(
+            modifier = Modifier.align(Alignment.Center).size(280.dp),
+            alpha = 0.045f
+        )
+        Column(
+            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -308,6 +319,34 @@ private fun HomeScreen(
         Text("PRoot/Wayland GUI integration is not bundled in this build.",
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.labelSmall)
+        }
+    }
+}
+
+@Composable
+private fun CryptoMark(modifier: Modifier = Modifier, alpha: Float = 1f) {
+    val tint = MaterialTheme.colorScheme.primary.copy(alpha = alpha)
+    Canvas(modifier = modifier) {
+        val diameter = size.minDimension
+        val stroke = diameter * 0.075f
+        val inset = stroke * 0.65f
+        drawArc(
+            color = tint,
+            startAngle = 42f,
+            sweepAngle = 276f,
+            useCenter = false,
+            topLeft = Offset(inset, inset),
+            size = Size(diameter - inset * 2f, diameter - inset * 2f),
+            style = Stroke(width = stroke, cap = StrokeCap.Round)
+        )
+        drawLine(
+            color = tint,
+            start = Offset(diameter * 0.49f, diameter * 0.5f),
+            end = Offset(diameter * 0.77f, diameter * 0.5f),
+            strokeWidth = stroke,
+            cap = StrokeCap.Round
+        )
+        drawCircle(tint, radius = stroke * 0.72f, center = Offset(diameter * 0.5f, diameter * 0.5f))
     }
 }
 
