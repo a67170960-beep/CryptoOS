@@ -1,16 +1,19 @@
 # CryptoOS
 
-CryptoOS is an early native Android launcher shell built with Kotlin and Jetpack Compose. It includes a dark, Linux-inspired home screen, a small local diagnostics terminal, and a Termux PRoot bootstrap script.
+CryptoOS is a native Android local-workspace shell built with Kotlin and Jetpack Compose. Version 0.2 adds a home dashboard, app-private file manager, persistent notes, 23 offline utilities, appearance settings, and a read-only diagnostics terminal. Across its modules the app exposes more than 70 usable actions; the individual operations are listed below.
 
-## Current scope
+## Features
 
-- Package and application ID: `dev.cryptoos`
-- Compose home screen with a minimal CryptoOS mark
-- Local terminal commands: `help`, `about`, `date`, `uname`, `pwd`, `ls`, and `clear`
-- Debian PRoot bootstrap for Termux
-- Optional APK signing and GitHub Actions build/security workflow
+- **Home:** live clock and date, shortcut search, pin/unpin shortcuts, pinned-first ordering, 2- or 3-column layout, compact cards, three dark themes, four accent colors, live notes/workspace counters, five module shortcuts, and optional haptic feedback.
+- **Files:** browse app-private folders, move to parent, search, filter all/files/folders, sort by name/size/date/type, show/hide hidden entries, create text files/folders, preview text, copy/share text, rename, delete with confirmation, and inspect workspace storage use.
+- **Notes:** create/edit/delete, add tags, pin/unpin, search, filter by pinned/tag, sort by most recent, view character/word counts, copy/share notes, and keep notes on-device between sessions.
+- **Offline tools (23):** calculator, percentage calculator, word and character counts, uppercase/lowercase/title case, reverse text, trim lines, remove blank lines, unique lines, sort lines, JSON format/compact, URL encode/decode, Base64 encode/decode, Unix timestamp conversion, length and temperature conversion, color contrast, and UUID generation.
+- **Settings:** theme, accent, grid columns, compact cards, live clock, pinned-first order, haptic feedback, text scale, export settings, open Android app settings, and reset preferences.
+- **Terminal (16 built-in commands):** help, about, date, time, uptime, Android version, device model, ABI, SDK, app version, sandbox identity, private working directory, file listing, storage status, command history, and clear.
 
-The current terminal is deliberately limited to built-in, read-only device diagnostics. It does not execute arbitrary shell commands. The Android app does not yet embed a PRoot runtime or provide Linux GUI applications as Android windows. The bootstrap script prepares a Debian environment in Termux; it does not connect that environment to the app's window system.
+All notes and files stay in the app's private storage. Utilities run locally. The terminal only supports its built-in diagnostics; it does not execute arbitrary shell commands.
+
+The Termux script prepares Debian PRoot separately. This Android app does not yet embed a PRoot runtime or connect Wayland GUI apps to Android windows.
 
 ## Build
 

@@ -1,6 +1,9 @@
 package dev.cryptoos
 
 import android.os.Bundle
+import android.content.Context
+import android.os.StatFs
+import android.os.SystemClock
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.compose.BackHandler
@@ -38,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -58,8 +62,7 @@ class TerminalActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 TerminalScreen(
-                    onBack = { finish() },
-                    workingDirectory = filesDir.absolutePath
+                    onBack = { finish() }
                 )
             }
         }
@@ -69,12 +72,13 @@ class TerminalActivity : ComponentActivity() {
 private data class TerminalLine(val command: String? = null, val output: String)
 
 @Composable
-private fun TerminalScreen(onBack: () -> Unit, workingDirectory: String) {
+private fun TerminalScreen(onBack: () -> Unit) {
     BackHandler(onBack = onBack)
+    val context = LocalContext.current
     val history = remember {
         mutableStateListOf(
-            TerminalLine(output = "CryptoOS local terminal · no external commands are executed."),
-            TerminalLine(output = "Type 'help' to see the available read-only commands.")
+            TerminalLine(output = "CryptoOS local terminal · 15 built-in diagnostics."),
+            TerminalLine(output = "No shell process or network connection is started.")
         )
     }
     var input by remember { mutableStateOf("") }
@@ -163,7 +167,8 @@ private fun TerminalScreen(onBack: () -> Unit, workingDirectory: String) {
             IconButton(onClick = {
                 val command = input.trim()
                 if (command.isNotEmpty()) {
-                    val output = runLocalCommand(command, workingDirectory)
+                    val priorCommands = history.mapNotNull { it.command }
+                    val output = runLocalCommand(command, context, priorCommands)
                     if (command == "clear") {
                         history.clear()
                     } else {
@@ -179,15 +184,30 @@ private fun TerminalScreen(onBack: () -> Unit, workingDirectory: String) {
     }
 }
 
-private fun runLocalCommand(command: String, workingDirectory: String): String {
+private fun runLocalCommand(command: String, context: Context, previous: List<String>): String {
+    val root = context.filesDir
+    val stat = StatFs(root.path)
     return when (command.lowercase(Locale.ROOT)) {
-        "help" -> "Available commands: help, about, date, uname, pwd, ls, clear"
-        "about" -> "CryptoOS 0.1.0 · local-only diagnostics · no shell or network access."
+        "help" -> "Available: help, about, date, time, uptime, android, device, abi, sdk, app, whoami, pwd, ls, storage, history, clear"
+        "about" -> "CryptoOS 0.2.0 · local diagnostics · commands are allow-listed."
         "date" -> SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault()).format(Date())
-        "uname" -> "Android ${android.os.Build.VERSION.RELEASE} (${android.os.Build.SUPPORTED_ABIS.firstOrNull() ?: "unknown"})"
-        "pwd" -> workingDirectory
+        "time" -> SimpleDateFormat("HH:mm:ss z", Locale.getDefault()).format(Date())
+        "uptime" -> "${SystemClock.elapsedRealtime() / 1000} seconds since boot"
+        "android" -> "Android ${android.os.Build.VERSION.RELEASE} · API ${android.os.Build.VERSION.SDK_INT}"
+        "device" -> "${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}"
+        "abi" -> android.os.Build.SUPPORTED_ABIS.joinToString()
+        "sdk" -> "SDK ${android.os.Build.VERSION.SDK_INT}"
+        "app" -> "${context.packageName} · version ${BuildConfig.VERSION_NAME}"
+        "whoami" -> "CryptoOS app sandbox · no root access"
+        "pwd" -> root.absolutePath
         "ls" -> "App-private files: " +
-            (java.io.File(workingDirectory).list()?.sorted()?.joinToString("  ").ifNullOrBlank("empty"))
+            (root.list()?.sorted()?.joinToString("  ").ifNullOrBlank("empty"))
+        "storage" -> {
+            val available = stat.availableBytes / (1024 * 1024)
+            val total = stat.totalBytes / (1024 * 1024)
+            "Private storage volume: $available MB available of $total MB"
+        }
+        "history" -> previous.takeLast(20).joinToString("\n").ifBlank { "No commands yet." }
         "clear" -> ""
         else -> "Command not available. This terminal only runs built-in, read-only local diagnostics."
     }
