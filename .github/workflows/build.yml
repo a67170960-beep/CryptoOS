@@ -81,7 +81,7 @@ jobs:
             cp app/build/outputs/apk/release/app-release.apk build-output/CryptoOS-release.apk
             test -s build-output/CryptoOS-release.apk
           fi
-          apksigner verify --verbose build-output/CryptoOS-debug.apk
+          "${ANDROID_HOME}/build-tools/35.0.0/apksigner" verify --verbose build-output/CryptoOS-debug.apk
 
       - name: Upload installable debug APK
         uses: actions/upload-artifact@v4
