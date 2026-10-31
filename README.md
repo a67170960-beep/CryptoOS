@@ -49,7 +49,7 @@ proot-distro login debian --user root -- bash -s < scripts/setup_osint.sh
 
 ## GitHub Actions
 
-The workflow builds a release APK on pushes and creates a GitHub Release for tags beginning with `v`.
+Each workflow run builds an installable, debug-signed APK for device testing. Download `CryptoOS-debug.apk` from the `CryptoOS-installable-debug-apk` artifact on the Actions run page. This test build is not for production distribution.
 
 For signed APKs, add these optional repository secrets in GitHub:
 
@@ -58,4 +58,4 @@ For signed APKs, add these optional repository secrets in GitHub:
 - `ANDROID_KEY_ALIAS`
 - `ANDROID_KEY_PASSWORD`
 
-Without signing secrets, the workflow builds an unsigned APK.
+The workflow creates a GitHub Release for `v*` tags only when all four release-signing secrets are configured. Without them, it skips publishing an unsigned release.
