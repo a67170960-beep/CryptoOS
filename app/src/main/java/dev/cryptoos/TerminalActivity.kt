@@ -197,7 +197,11 @@ private fun runLocalCommand(command: String, context: Context, previous: List<St
         "device" -> "${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}"
         "abi" -> android.os.Build.SUPPORTED_ABIS.joinToString()
         "sdk" -> "SDK ${android.os.Build.VERSION.SDK_INT}"
-        "app" -> "${context.packageName} · version ${BuildConfig.VERSION_NAME}"
+        "app" -> {
+            val version = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+                .ifNullOrBlank("unknown")
+            "${context.packageName} · version $version"
+        }
         "whoami" -> "CryptoOS app sandbox · no root access"
         "pwd" -> root.absolutePath
         "ls" -> "App-private files: " +

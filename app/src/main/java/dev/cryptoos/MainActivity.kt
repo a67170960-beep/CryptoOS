@@ -125,7 +125,7 @@ class MainActivity : ComponentActivity() {
                                         CryptoStorage.saveSettings(context, it)
                                     },
                                     onOpenTerminal = {
-                                        startActivity(Intent(this, TerminalActivity::class.java))
+                                        startActivity(Intent(context, TerminalActivity::class.java))
                                     }
                                 )
                                 CryptoTab.FILES -> FileManagerScreen()
